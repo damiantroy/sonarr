@@ -1,0 +1,16 @@
+version: "3.6"
+
+services:
+  sut:
+    build: .
+    volumes:
+      - sonarr_config:/config
+    command: >
+      bash -c "/usr/bin/mono /opt/sonarr/bin/NzbDrone.exe -nobrowser -data /opt/sonarr &
+               test.sh -t 30 -u http://localhost:8989/ -e Sonarr"
+
+volumes:
+  sonarr_config:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
