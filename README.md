@@ -1,6 +1,21 @@
 # Sonarr TV manager CentOS container
 
-## Configuration
+This is a CentOS 7 container for [Sonarr](https://sonarr.tv/), which keeps track of and organises your TV video library.
+
+## Building
+
+To build and test the image, run:
+
+```shell script
+make all # build test
+```
+
+## Running
+
+More complete instructions are in my [VideoBot Tutorial](https://github.com/damiantroy/videobot),
+but this should be enough to get you started.
+
+### Configuration
 
 | Command | Config   | Description
 | ------- | -------- | -----
@@ -11,9 +26,6 @@
 | VOLUME  | /config  | Configuration directory
 | EXPOSE  | 8112/tcp | HTTP port for web interface
 
-## Instructions
-
-Build and run:
 ```shell script
 PUID=1001
 PGID=1001
@@ -24,9 +36,6 @@ SONARR_IMAGE=localhost/sonarr # Or damiantroy/sonarr if deploying from docker.io
 
 sudo mkdir -p ${VIDEOS_DIR} ${SONARR_CONFIG_DIR}
 sudo chown -R ${PUID}:${PGID} ${VIDEOS_DIR} ${SONARR_CONFIG_DIR}
-
-# You can skip the 'build' step if deploying from docker.io
-sudo podman build -t sonarr .
 
 sudo podman run -d \
     --pod video \
