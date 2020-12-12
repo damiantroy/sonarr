@@ -1,6 +1,6 @@
 # Sonarr TV manager CentOS container
 
-This is a CentOS 7 container for [Sonarr](https://sonarr.tv/), which keeps track of and organises your TV video library.
+This is a CentOS 8 container for [Sonarr](https://sonarr.tv/), which keeps track of and organises your TV video library.
 
 ## Building
 
@@ -31,19 +31,19 @@ PUID=1001
 PGID=1001
 TZ=Australia/Melbourne
 VIDEOS_DIR=/videos
-SONARR_CONFIG_DIR=/etc/config/sonarr
+SONARR_CONFIG_DIR=/etc/sonarr
 SONARR_IMAGE=localhost/sonarr # Or damiantroy/sonarr if deploying from docker.io
 
-sudo mkdir -p ${VIDEOS_DIR} ${SONARR_CONFIG_DIR}
-sudo chown -R ${PUID}:${PGID} ${VIDEOS_DIR} ${SONARR_CONFIG_DIR}
+sudo mkdir -p "$VIDEOS_DIR" "$SONARR_CONFIG_DIR"
+sudo chown -R "$PUID:$PGID" "$VIDEOS_DIR" "$SONARR_CONFIG_DIR"
 
 sudo podman run -d \
-    --pod video \
     --name=sonarr \
-    -e PUID=${PUID} \
-    -e PGID=${PGID} \
-    -e TZ=${TZ} \
-    -v ${SONARR_CONFIG_DIR}:/config:Z \
-    -v ${VIDEOS_DIR}:/videos:z \
-    ${SONARR_IMAGE}
+    --network=host \
+    -e PUID="$PUID" \
+    -e PGID="$PGID" \
+    -e TZ="$TZ" \
+    -v "$SONARR_CONFIG_DIR:/config:Z" \
+    -v "$VIDEOS_DIR:/videos:z" \
+    "$SONARR_IMAGE"
 ```
