@@ -1,6 +1,6 @@
-# Sonarr TV manager CentOS container
+# Sonarr TV manager Rocky Linux container
 
-This is a CentOS 8 container for [Sonarr](https://sonarr.tv/), which keeps track of and organises your TV video library.
+This is a Rocky Linux 8 container for [Sonarr](https://sonarr.tv/), which keeps track of and organises your TV video library.
 
 ## Building
 
