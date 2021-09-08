@@ -1,4 +1,4 @@
-REPO_NAME ?= damiantroy
+REPO_NAME ?= localhost
 IMAGE_NAME ?= sonarr
 APP_NAME := ${REPO_NAME}/${IMAGE_NAME}
 CONTAINER_RUNTIME := $(shell command -v podman 2> /dev/null || echo docker)
@@ -25,12 +25,13 @@ test: ## Test the container.
 		bash -c "/usr/bin/mono /opt/sonarr/bin/NzbDrone.exe -nobrowser -data /opt/sonarr & \
 			   test.sh -t 30 -u http://localhost:8989/ -e Sonarr"
 
+.PHONY: snyk-test
+snyk-test: ## Run 'snyk test' on the image.
+	./scripts/snyk-check.sh -c "${IMAGE_NAME}" -a "test" -p Dockerfile
+
 .PHONY: snyk-monitor
-snyk-monitor:
-	mkdir .snyk
-	$(CONTAINER_RUNTIME) save "${APP_NAME}" -o ".snyk/${IMAGE_NAME}"
-	snyk container monitor "docker-archive:.snyk/${IMAGE_NAME}" --file=Dockerfile
-	rm -rf .snyk
+snyk-monitor: ## Run 'snyk monitor' on the image.
+	./scripts/snyk-check.sh -c "${IMAGE_NAME}" -a "monitor" -p Dockerfile
 
 .PHONY: push
 push: ## Publish the container on Docker Hub
